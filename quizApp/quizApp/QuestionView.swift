@@ -45,43 +45,71 @@ struct QuestionView: View {
     ]
     
     var body: some View {
+        //enables navigation between different pages
         NavigationView{
             VStack{
                 //displays the score
                 Text("Score: \(score)")
+                    //styling
+                    .position(CGPoint(x: 195, y: 40))
+                    .bold()
+                //displaying the question number
+                Text("Question \(questionNum)")
+                    //styling
+                    .padding(.top, -600)
+                //displaying the actual question
+                Text("\(allQs[questionNum-1].q)")
+                    //styling
+                    .frame(width: 250, height: 100)
+                    .cornerRadius(10)
+                    .padding(.top, -550)
+                    .bold()
                 
-                //displaying the question
-                Text("\(questionNum). \(allQs[questionNum-1].q)")
-                
-                //displaying the answer choices
-                ForEach(allQs[questionNum-1].answers, id: \.self){answer in
-                    Button(action: {
-
-                        if questionNum < 10{
-                            nextDisplay = true
-                        }
-                        
-                        if answer == allQs[questionNum-1].correct && !clicked{
-                            score += 1
+                //formatting
+                VStack{
+                    //displaying the answer choices
+                    ForEach(allQs[questionNum-1].answers, id: \.self){answer in
+                        Button(action: {
                             
-                        }
-                        clicked = true
-                    }, label:{
-                        Text(answer)
-                            .frame(width: 250, height: 50)
-                            .border(/*@START_MENU_TOKEN@*/Color.black/*@END_MENU_TOKEN@*/)
-                            .foregroundColor(.black)
-                            .cornerRadius(10)
-                    })
+                            //checks if there is a next question for the next question button to apear
+                            if questionNum < 10{
+                                nextDisplay = true
+                            }
+                            
+                            //checks if the user selected the correct answer on the first try
+                            if answer == allQs[questionNum-1].correct && !clicked{
+                                //increments the score
+                                score += 1
+                            }
+                            //makes the clicked boolean true after the user has clicked an option
+                            clicked = true
+                        }, label:{
+                            //the answer text for each option
+                            Text(answer)
+                                //styling
+                                .frame(width: 250, height: 50)
+                                .border(Color.black)
+                                .foregroundColor(.black)
+                                .cornerRadius(10)
+                        })
+                    }
                 }
+                //styling
+                .padding(.top, -400)
                 
+                //if the user has clicked an answer and there is a next question it displays the next button
                 if nextDisplay{
                     Button(action: {
+                        //increments the question num
                         questionNum += 1
+                        //changes the nextDisplay bool to hide the next button
                         nextDisplay = false
+                        //sets the clicked variable to false for user to click another option for the next question
                         clicked = false
                     }, label:{
+                        //the text of the next question button
                         Text("Next Question")
+                        //styling
                             .frame(width: 250, height: 50)
                             .background(Color.blue)
                             .foregroundColor(.white)
@@ -89,9 +117,13 @@ struct QuestionView: View {
                     })
                 }
                 
-                if questionNum == 10{
-                    NavigationLink(destination: FinalView(score: $score)){
+                //checks if the user is on the last question and has selected an answer to display the finish "button"
+                if questionNum == 10 && clicked{
+                    //navigates the user to the final page
+                    NavigationLink(destination: FinalView(score: $score).navigationBarBackButtonHidden(true)){
+                        //the text of the button
                         Text("Finish")
+                            //styling
                             .frame(width: 250, height: 50)
                             .background(Color.blue)
                             .foregroundColor(.white)

@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+//struct for creating a question and its answer choices
 struct question{
     var q: String
     var correct: String
@@ -16,28 +17,35 @@ struct question{
 struct ContentView: View {
     
     var body: some View {
+        //for enabling navigation between pages
         NavigationView{
             ZStack {
+                //background image
                 Image("questionBackground")
                 
+                //formatting
                 VStack{
+                    //page title
                     Text("Quiz Time")
-                        .padding()
-                        .frame(width: 250, height: 70)
+                        //styling
+                        .frame(width: 250, height: 90)
                         .fontWeight(.bold)
-                        .font(.system(size: 40))
+                        .font(.system(size: 45))
                         .background(Color.white)
                         .cornerRadius(10)
+                        .padding(150)
                     
+                    //directs user to game page, the start button
                     NavigationLink(destination: QuestionView().navigationBarBackButtonHidden(true)){
                         Text("Start")
-                            .padding()
+                            //styling
                             .frame(width: 250, height: 70)
                             .background(Color.blue)
                             .foregroundColor(.white)
                             .font(.system(size:40))
                             .bold()
                             .cornerRadius(10)
+                            .padding(150)
                     }
                         
                 }
